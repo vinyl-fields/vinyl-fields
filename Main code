@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Upload Gallery</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        #gallery { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+        .image-container { display: flex; flex-direction: column; align-items: center; border: 1px solid #ddd; padding: 10px; }
+        img { max-width: 200px; max-height: 200px; }
+        .details { display: flex; width: 100%; justify-content: space-between; margin-top: 5px; }
+        .details input { width: 45%; padding: 5px; }
+    </style>
+</head>
+<body>
+    <h2>Upload and Display Images</h2>
+    <input type="file" id="imageInput" multiple accept="image/*">
+    <div id="gallery"></div>
+
+    <script>
+        document.getElementById('imageInput').addEventListener('change', function(event) {
+            const gallery = document.getElementById('gallery');
+            gallery.innerHTML = ''; // Clear previous images
+            Array.from(event.target.files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const container = document.createElement('div');
+                    container.classList.add('image-container');
+                    
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    
+                    const details = document.createElement('div');
+                    details.classList.add('details');
+                    
+                    const nameInput = document.createElement('input');
+                    nameInput.type = 'text';
+                    nameInput.placeholder = 'Product Name';
+                    
+                    const priceInput = document.createElement('input');
+                    priceInput.type = 'text';
+                    priceInput.placeholder = 'Price';
+                    
+                    details.appendChild(nameInput);
+                    details.appendChild(priceInput);
+                    
+                    container.appendChild(img);
+                    container.appendChild(details);
+                    gallery.appendChild(container);
+                }
+                reader.readAsDataURL(file);
+            });
+        });
+    </script>
+</body>
+</html>
